@@ -4,6 +4,8 @@ exports.required = (req, res, next) => {
   try {
     const token = req.headers.authorization.split(" ")[1];
     const decode = jwt.verify(token, process.env.JWT_KEY);
+    console.log(decode, "decode");
+    console.log("aqui");
     req.user = decode;
     next();
   } catch (error) {
