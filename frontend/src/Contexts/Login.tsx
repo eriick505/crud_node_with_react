@@ -1,13 +1,17 @@
-import axios from "axios";
 import { createContext, useState } from "react";
 import { useHistory } from "react-router-dom";
+import axios, { AxiosResponse } from "axios";
+
 import http from "Services/api";
-import { LOGIN_POST } from "Services/login";
+import { GET_USER_POST, LOGIN_POST } from "Services/login";
+
+import useLocalStorage from "Hooks/useLocalStorage";
 
 type LoginContextType = {
   login: boolean;
-  handleLogin: (body: HandleLogin) => void;
+  data: UserData;
   error?: string;
+  handleLogin: (body: HandleLogin) => void;
 };
 
 type LoginProviderProps = {
@@ -17,6 +21,17 @@ type LoginProviderProps = {
 type HandleLogin = {
   email: string;
   password: string;
+};
+
+type DataResponse = {
+  message: string;
+  token: string;
+};
+
+type UserData = {
+  id: number;
+  name: string;
+  email: string;
 };
 
 type ErrorMessage = {
@@ -30,18 +45,45 @@ export const LoginContext = createContext<LoginContextType>(
 function LoginProvider({ children }: LoginProviderProps) {
   const [login, setLogin] = useState(false);
   const [error, setError] = useState<string | undefined>();
+  const [data, setData] = useState({} as UserData);
 
   const history = useHistory();
+  const [, setToken] = useLocalStorage("userToken", "");
 
-  const handleLogin = async (body: HandleLogin) => {
+  const getUser = async (token: string) => {
+    const options = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
     try {
-      const { data, status } = await http.post(LOGIN_POST, body);
+      const { data, status }: AxiosResponse<UserData> = await http.post(
+        GET_USER_POST,
+        {},
+        options
+      );
 
       if (status !== 200) throw new Error();
 
+      setData(data);
       setLogin(true);
+    } catch (e) {}
+  };
+
+  const handleLogin = async (body: HandleLogin) => {
+    try {
+      const { data, status }: AxiosResponse<DataResponse> = await http.post(
+        LOGIN_POST,
+        body
+      );
+
+      if (status !== 200) throw new Error();
+
+      setToken(data.token);
+
+      await getUser(data.token);
       setError(undefined);
-      console.log(data); //salvar token
       history.push("/");
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
@@ -60,7 +102,7 @@ function LoginProvider({ children }: LoginProviderProps) {
   };
 
   return (
-    <LoginContext.Provider value={{ login, handleLogin, error }}>
+    <LoginContext.Provider value={{ login, data, error, handleLogin }}>
       {children}
     </LoginContext.Provider>
   );

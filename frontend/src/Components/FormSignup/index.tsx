@@ -9,6 +9,7 @@ import useInput from "Hooks/useInput";
 import FormInputControl from "Components/FormInputControl";
 import FormButton from "Components/FormButton";
 import useLogin from "Hooks/useLogin";
+import { Alert, AlertIcon } from "@chakra-ui/react";
 
 type ErrorMessage = {
   message?: string;
@@ -33,7 +34,7 @@ function FormSignup() {
     if (isFieldsAreValid) {
       try {
         setLoading(true);
-        const { data, status, statusText } = await http.post(CREATE_USER_POST, {
+        const { data, status } = await http.post(CREATE_USER_POST, {
           name: name.value,
           email: email.value,
           password: password.value,
@@ -41,7 +42,7 @@ function FormSignup() {
 
         if (status !== 201) throw new Error();
 
-        console.log(data, status, statusText);
+        console.log("FORM CREATE", data);
         setError(null);
         handleLogin({ email: email.value, password: password.value });
       } catch (err) {
@@ -102,7 +103,12 @@ function FormSignup() {
         />
       </form>
 
-      {(error || loginError) && <p>{error ?? loginError}</p>}
+      {(error || loginError) && (
+        <Alert status="error" mt={4}>
+          <AlertIcon />
+          {error ?? loginError}
+        </Alert>
+      )}
     </>
   );
 }
