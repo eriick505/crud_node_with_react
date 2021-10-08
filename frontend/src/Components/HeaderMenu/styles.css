@@ -1,0 +1,17 @@
+.menu {
+  display: flex;
+  justify-content: center;
+
+  width: 100%;
+}
+
+.menuList {
+  display: flex;
+  align-items: center;
+
+  list-style: none;
+}
+
+.menuList li:not(:last-child) {
+  margin-right: 1rem;
+}
