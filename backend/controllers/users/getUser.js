@@ -8,7 +8,7 @@ const getUser = (req, res, next) => {
 
     return res.status(200).send(decode);
   } catch (err) {
-    return res.status(500).send({ message: err.message });
+    return res.status(406).send({ message: err.message });
   }
 };
 
