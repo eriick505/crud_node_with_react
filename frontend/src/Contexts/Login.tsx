@@ -1,111 +1,116 @@
-import { createContext, useState } from "react";
+import { createContext, useCallback } from "react";
 import { useHistory } from "react-router-dom";
-import axios, { AxiosResponse } from "axios";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
-import http from "Services/api";
-import { GET_USER_POST, LOGIN_POST } from "Services/login";
+import { tokenKey } from "Services/api";
+import { USER_INFO_POST, USER_LOGIN_POST } from "Services/login";
 
-import useLocalStorage from "Hooks/useLocalStorage";
+import type { UserBodyGetRequest, UserData } from "Types/user";
 
 type LoginContextType = {
-  login: boolean;
-  data: UserData;
-  error?: string;
-  handleLogin: (body: HandleLogin) => void;
+  handleUserData: {
+    data?: UserData;
+    loading: boolean;
+    error?: string;
+    hasUserData: boolean;
+  };
+  handleAuth: {
+    login: (body: UserBodyGetRequest) => void;
+    loading: boolean;
+    error: boolean;
+  };
+  userLogout: () => void;
 };
 
 type LoginProviderProps = {
   children?: React.ReactNode;
 };
 
-type HandleLogin = {
-  email: string;
-  password: string;
-};
-
-type DataResponse = {
-  message: string;
-  token: string;
-};
-
-type UserData = {
-  id: number;
-  name: string;
-  email: string;
-};
-
-type ErrorMessage = {
-  message?: string;
-};
-
-export const LoginContext = createContext<LoginContextType>(
+export const AuthContext = createContext<LoginContextType>(
   {} as LoginContextType
 );
 
-function LoginProvider({ children }: LoginProviderProps) {
-  const [login, setLogin] = useState(false);
-  const [error, setError] = useState<string | undefined>();
-  const [data, setData] = useState({} as UserData);
-
+function AuthProvider({ children }: LoginProviderProps) {
   const history = useHistory();
-  const [, setToken] = useLocalStorage("userToken", "");
+  const queryClient = useQueryClient();
 
-  const getUser = async (token: string) => {
-    const options = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
+  const token = window.localStorage.getItem(tokenKey);
 
-    try {
-      const { data, status }: AxiosResponse<UserData> = await http.post(
-        GET_USER_POST,
-        {},
-        options
-      );
+  const setUser = useCallback(
+    (data: UserData) => queryClient.setQueryData("auth-user", data),
+    [queryClient]
+  );
 
-      if (status !== 200) throw new Error();
+  const loadUserData = async () => {
+    console.log("buscando loadUserData...");
 
-      setData(data);
-      setLogin(true);
-    } catch (e) {}
+    if (!token) return Promise.reject("Fail to load user");
+
+    return await USER_INFO_POST(token).then((r) => r.data);
   };
 
-  const handleLogin = async (body: HandleLogin) => {
-    try {
-      const { data, status }: AxiosResponse<DataResponse> = await http.post(
-        LOGIN_POST,
-        body
-      );
-
-      if (status !== 200) throw new Error();
-
-      setToken(data.token);
-
-      await getUser(data.token);
-      setError(undefined);
+  const userData = useQuery<UserData | undefined, Error>({
+    queryKey: "auth-user",
+    queryFn: loadUserData,
+    onSuccess: () => {
       history.push("/");
-    } catch (err) {
-      if (axios.isAxiosError(err) && err.response) {
-        const { data, status } = err.response;
+    },
+    onError: () => {
+      window.localStorage.removeItem(tokenKey);
+    },
+    enabled: Boolean(token),
+    staleTime: 15 * 60 * 1000, // 15 minutes
+    refetchInterval: (_, query) => (query.isStale() ? 1 : false), // 1 = mili-second
+  });
 
-        if (status === 409) {
-          const { message }: ErrorMessage = data;
-          return setError(message);
-        }
+  const loginFn = async (body: UserBodyGetRequest) => {
+    const { data } = await USER_LOGIN_POST(body);
+    const user = await USER_INFO_POST(data.token);
 
-        return setError((err as Error).message);
-      }
+    window.localStorage.setItem(tokenKey, data.token);
+    history.push("/");
 
-      setError((err as Error).message);
-    }
+    return user.data;
+  };
+
+  const loginMutation = useMutation({
+    mutationFn: loginFn,
+    onSuccess: (user) => {
+      setUser(user);
+    },
+  });
+
+  const userLogout = useCallback(() => {
+    window.localStorage.removeItem(tokenKey);
+    userData.remove();
+    loginMutation.reset();
+    history.push("/login");
+  }, [history, loginMutation, userData]);
+
+  const handleUserData = {
+    data: userData.data,
+    loading: userData.isLoading,
+    error: userData.error?.message,
+    hasUserData: userData.isSuccess,
+  };
+
+  const handleAuth = {
+    login: loginMutation.mutateAsync,
+    loading: loginMutation.isLoading,
+    error: loginMutation.isError,
   };
 
   return (
-    <LoginContext.Provider value={{ login, data, error, handleLogin }}>
+    <AuthContext.Provider
+      value={{
+        handleUserData,
+        handleAuth,
+        userLogout,
+      }}
+    >
       {children}
-    </LoginContext.Provider>
+    </AuthContext.Provider>
   );
 }
 
-export default LoginProvider;
+export default AuthProvider;

@@ -12,6 +12,7 @@ import FormButton from "Components/FormButton";
 
 type FormInputControlProps = {
   required?: boolean;
+  mr?: number;
   mb?: number;
   label: string;
   type: string;
@@ -20,11 +21,13 @@ type FormInputControlProps = {
   placeholder?: string;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (e: ChangeEvent<HTMLInputElement>) => void;
+  disabled?: boolean;
   error?: string;
 };
 
 function FormInputControl({
   required,
+  mr,
   mb,
   label,
   type,
@@ -33,6 +36,7 @@ function FormInputControl({
   placeholder,
   onChange,
   onBlur,
+  disabled,
   error,
 }: FormInputControlProps) {
   const [show, setShow] = useState(false);
@@ -42,7 +46,7 @@ function FormInputControl({
   const handleClick = () => setShow(!show);
 
   return (
-    <FormControl isRequired={required} mb={mb}>
+    <FormControl isRequired={required} mb={mb} mr={mr}>
       <FormLabel>{label}</FormLabel>
 
       {type === "password" ? (
@@ -78,6 +82,7 @@ function FormInputControl({
           placeholder={placeholder}
           onChange={onChange}
           onBlur={onBlur}
+          disabled={disabled}
           isInvalid={Boolean(error)}
         />
       )}

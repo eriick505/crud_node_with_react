@@ -1,12 +1,11 @@
 import { Redirect, Route } from "react-router-dom";
-import useLogin from "Hooks/useLogin";
+import useAuth from "Hooks/useAuth";
 
 function ProtectedRouter(props: any) {
-  const { login } = useLogin();
+  const { handleUserData } = useAuth();
 
-  if (login) return <Route {...props} />;
-  if (!login) return <Redirect to="/login" />;
-  return null;
+  if (handleUserData.hasUserData) return <Route exact {...props} />;
+  return <Redirect to="/login" />;
 }
 
 export default ProtectedRouter;

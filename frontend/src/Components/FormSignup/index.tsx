@@ -1,19 +1,18 @@
 import { FormEvent, useState } from "react";
+import { useHistory } from "react-router-dom";
+
+import { Alert, AlertIcon } from "@chakra-ui/react";
 
 import axios from "axios";
-import http from "Services/api";
+
 import { CREATE_USER_POST } from "Services/login";
 
 import useInput from "Hooks/useInput";
 
 import FormInputControl from "Components/FormInputControl";
 import FormButton from "Components/FormButton";
-import useLogin from "Hooks/useLogin";
-import { Alert, AlertIcon } from "@chakra-ui/react";
 
-type ErrorMessage = {
-  message?: string;
-};
+import type { ErrorMessage } from "Types";
 
 function FormSignup() {
   const [loading, setLoading] = useState(false);
@@ -23,7 +22,7 @@ function FormSignup() {
   const email = useInput();
   const password = useInput();
 
-  const { handleLogin, error: loginError } = useLogin();
+  const history = useHistory()
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -34,7 +33,9 @@ function FormSignup() {
     if (isFieldsAreValid) {
       try {
         setLoading(true);
-        const { data, status } = await http.post(CREATE_USER_POST, {
+        setError(null);
+
+        const { status } = await CREATE_USER_POST({
           name: name.value,
           email: email.value,
           password: password.value,
@@ -42,25 +43,14 @@ function FormSignup() {
 
         if (status !== 201) throw new Error();
 
-        console.log("FORM CREATE", data);
-        setError(null);
-        handleLogin({ email: email.value, password: password.value });
+        setLoading(false);
+
+        history.push('/login/successfully-registered')
       } catch (err) {
-        if (axios.isAxiosError(err) && err.response) {
-          const { data, status } = err.response;
-
-          if (status === 409) {
-            const { message }: ErrorMessage = data;
-            return setError(message);
-          }
-
-          return setError((err as Error).message);
-        }
+        if (axios.isAxiosError(err) && err.response) return setError((err.response.data as ErrorMessage).message);
 
         setError((err as Error).message);
-      } finally {
-        setLoading(false);
-      }
+      } 
     }
   };
 
@@ -103,10 +93,10 @@ function FormSignup() {
         />
       </form>
 
-      {(error || loginError) && (
+      {error && (
         <Alert status="error" mt={4}>
           <AlertIcon />
-          {error ?? loginError}
+          {error}
         </Alert>
       )}
     </>

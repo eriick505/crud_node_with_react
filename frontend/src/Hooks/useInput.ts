@@ -6,6 +6,7 @@ type UseInput = {
   error: string;
   validate: () => boolean;
   onBlur: () => boolean;
+  setValue: (v: string) => void;
 };
 
 function useInput(): UseInput {
@@ -33,6 +34,7 @@ function useInput(): UseInput {
     error,
     validate: () => validateValue(value),
     onBlur: () => validateValue(value),
+    setValue,
   };
 }
 

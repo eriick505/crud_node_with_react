@@ -1,14 +1,17 @@
+import { Container } from "@chakra-ui/react";
+
+import useAuth from "Hooks/useAuth";
+
 import ProductList from "Components/ProductList";
-import useLogin from "Hooks/useLogin";
 
 function PageHome() {
-  const { data } = useLogin();
+  const { handleUserData } = useAuth();
 
   return (
-    <>
-      <h1>{data.name}</h1>
+    <Container maxW="container.lg" mt={50}>
+      <h1>{handleUserData.data?.name}</h1>
       <ProductList />
-    </>
+    </Container>
   );
 }
 

@@ -1,4 +1,5 @@
 import { Box, Container, Heading, useColorModeValue } from "@chakra-ui/react";
+
 import FormSignup from "Components/FormSignup";
 
 function PageSignUp() {
@@ -11,8 +12,7 @@ function PageSignUp() {
         as="section"
         bg={bg}
         color={color}
-        border="1px"
-        borderColor="gray.800"
+        boxShadow="2xl"
         py={8}
         px={4}
         borderRadius="lg"

@@ -1,54 +1,53 @@
-import { Badge, Box, Image } from "@chakra-ui/react";
+import { Badge, Box, IconButton, Image } from "@chakra-ui/react";
+import { FiTrash } from "react-icons/fi";
 
-function ProductCard() {
-  const property = {
-    imageUrl: "https://bit.ly/2Z4KKcF",
-    imageAlt: "Rear view of modern home with pool",
-    beds: 3,
-    baths: 2,
-    title: "Modern home in city center in the heart of historic Los Angeles",
-    formattedPrice: "$1,900.00",
-    reviewCount: 34,
-    rating: 4,
-  };
+import type { Product } from "Types/products.types";
+
+type ProductCardProps = {
+  data: Product;
+  deleteProduct: (id: number) => void;
+};
+
+function ProductCard({ data, deleteProduct }: ProductCardProps) {
+  const { id_product, name, image_product, price } = data;
+
+  const imageWithUrl = `http://localhost:3000/${image_product}`;
 
   return (
     <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden">
-      <Image src={property.imageUrl} alt={property.imageAlt} />
+      <Image
+        boxSize="300px"
+        objectFit="cover"
+        src={imageWithUrl}
+        fallbackSrc="https://via.placeholder.com/300"
+        alt={name}
+      />
 
       <Box p="6">
-        <Box display="flex" alignItems="baseline">
+        <Box display="flex" alignItems="center" justifyContent="space-between">
           <Badge borderRadius="full" px="2" colorScheme="teal">
-            New
+            {id_product}
           </Badge>
-          <Box
-            color="gray.500"
-            fontWeight="semibold"
-            letterSpacing="wide"
-            fontSize="xs"
-            textTransform="uppercase"
-            ml="2"
-          >
-            {property.beds} beds &bull; {property.baths} baths
-          </Box>
+
+          <IconButton
+            colorScheme="red"
+            aria-label="Delete product"
+            onClick={() => deleteProduct(id_product)}
+            icon={<FiTrash />}
+          />
         </Box>
 
         <Box
+          isTruncated
+          as="h4"
           mt="1"
           fontWeight="semibold"
-          as="h4"
           lineHeight="tight"
-          isTruncated
         >
-          {property.title}
+          {name}
         </Box>
 
-        <Box>
-          {property.formattedPrice}
-          <Box as="span" color="gray.600" fontSize="sm">
-            / wk
-          </Box>
-        </Box>
+        <Box>R$ {price}</Box>
       </Box>
     </Box>
   );

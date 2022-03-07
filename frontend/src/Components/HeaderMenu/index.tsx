@@ -1,9 +1,23 @@
-import { Menu, MenuButton, MenuList, MenuItem, Button } from "@chakra-ui/react";
+import { Link as RouterLink, useLocation } from "react-router-dom";
+
 import { FiChevronUp, FiChevronDown } from "react-icons/fi";
+import {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Button,
+  Link,
+} from "@chakra-ui/react";
+
+import useAuth from "Hooks/useAuth";
 
 import "./styles.css";
 
 function HeaderMenu() {
+  const location = useLocation();
+  const { userLogout } = useAuth();
+
   return (
     <nav className="menu">
       <ul className="menuList">
@@ -19,7 +33,17 @@ function HeaderMenu() {
                 </MenuButton>
                 <MenuList>
                   <MenuItem>Todos os Produtos</MenuItem>
-                  <MenuItem>Adicionar Produtos</MenuItem>
+                  <MenuItem>
+                    <Link
+                      as={RouterLink}
+                      to={{
+                        pathname: "/add-product",
+                        state: { pageAddProduct: location },
+                      }}
+                    >
+                      Adicionar Produtos
+                    </Link>
+                  </MenuItem>
                 </MenuList>
               </>
             )}
@@ -43,7 +67,9 @@ function HeaderMenu() {
             )}
           </Menu>
         </li>
-        <li>Sair</li>
+        <li>
+          <Button onClick={userLogout}>Sair</Button>
+        </li>
       </ul>
     </nav>
   );
