@@ -1,5 +1,6 @@
 const mysql = require("../../mysql").pool;
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const signup = (req, res, next) => {
   mysql.getConnection((error, conn) => {
@@ -27,6 +28,18 @@ const signup = (req, res, next) => {
 
           if (error) return res.status(500).send({ error });
 
+          const token = jwt.sign(
+            {
+              id_user: results.insertId,
+              name: req.body.name,
+              email: req.body.email,
+            },
+            process.env.JWT_KEY,
+            {
+              expiresIn: "1h",
+            }
+          );
+
           const response = {
             message: "Successfully created user",
             userCreated: {
@@ -34,6 +47,7 @@ const signup = (req, res, next) => {
               name: req.body.name,
               email: req.body.email,
             },
+            token,
           };
 
           return res.status(201).send(response);
