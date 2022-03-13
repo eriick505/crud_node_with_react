@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 13-Mar-2022 às 17:27
+-- Tempo de geração: 13-Mar-2022 às 21:11
 -- Versão do servidor: 10.4.20-MariaDB
 -- versão do PHP: 7.4.21
 
@@ -66,6 +66,27 @@ INSERT INTO `products` (`id_product`, `name`, `price`, `image_product`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `product_images`
+--
+
+CREATE TABLE `product_images` (
+  `id_image` int(11) NOT NULL,
+  `id_product` int(11) DEFAULT NULL,
+  `image_path` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Extraindo dados da tabela `product_images`
+--
+
+INSERT INTO `product_images` (`id_image`, `id_product`, `image_path`) VALUES
+(4, 69, 'uploads\\2022-03-13T19-33-06.441Z-ptd.png'),
+(6, 69, 'uploads\\2022-03-13T19-36-31.664Z-ptd.png'),
+(7, 69, 'uploads\\2022-03-13T20-02-55.886Z-ptd.png');
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `users`
 --
 
@@ -122,6 +143,13 @@ ALTER TABLE `products`
   ADD PRIMARY KEY (`id_product`);
 
 --
+-- Índices para tabela `product_images`
+--
+ALTER TABLE `product_images`
+  ADD PRIMARY KEY (`id_image`),
+  ADD KEY `id_product` (`id_product`);
+
+--
 -- Índices para tabela `users`
 --
 ALTER TABLE `users`
@@ -145,6 +173,12 @@ ALTER TABLE `products`
   MODIFY `id_product` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 
 --
+-- AUTO_INCREMENT de tabela `product_images`
+--
+ALTER TABLE `product_images`
+  MODIFY `id_image` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT de tabela `users`
 --
 ALTER TABLE `users`
@@ -159,6 +193,12 @@ ALTER TABLE `users`
 --
 ALTER TABLE `orders`
   ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`id_product`) REFERENCES `products` (`id_product`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Limitadores para a tabela `product_images`
+--
+ALTER TABLE `product_images`
+  ADD CONSTRAINT `product_images_ibfk_1` FOREIGN KEY (`id_product`) REFERENCES `products` (`id_product`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
