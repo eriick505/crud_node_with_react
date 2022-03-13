@@ -16,7 +16,7 @@ import "./styles.css";
 
 function HeaderMenu() {
   const location = useLocation();
-  const { userLogout } = useAuth();
+  const { loginAuth } = useAuth();
 
   return (
     <nav className="menu">
@@ -68,7 +68,7 @@ function HeaderMenu() {
           </Menu>
         </li>
         <li>
-          <Button onClick={userLogout}>Sair</Button>
+          <Button onClick={loginAuth.logout}>Sair</Button>
         </li>
       </ul>
     </nav>

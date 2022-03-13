@@ -19,12 +19,12 @@ type CustomLocation = {
 };
 
 function Routes() {
-  const { handleUserData } = useAuth();
+  const { userAuth } = useAuth();
   const location = useLocation<{ pageAddProduct: CustomLocation }>();
 
   const showPageAddProduct = location.state && location.state.pageAddProduct;
 
-  if (handleUserData.loading)
+  if (userAuth.loading)
     return (
       <Box
         display="flex"

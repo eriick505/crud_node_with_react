@@ -2,7 +2,7 @@ import { Heading, SimpleGrid } from "@chakra-ui/react";
 
 import { useListProduct, useDeleteProductMutation } from "Services/products";
 
-import ProductCard from "Components/ProductCard";
+import ProductCard from "Components/ProductList/ProductCard";
 
 function ProductList() {
   const { isLoading, error, isError, data: listProduct } = useListProduct();
@@ -27,7 +27,7 @@ function ProductList() {
           {productList?.map((product) => (
             <ProductCard
               key={product.id_product}
-              data={product}
+              product={product}
               deleteProduct={deleteProduct.mutate}
             />
           ))}

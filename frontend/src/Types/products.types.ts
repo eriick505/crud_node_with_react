@@ -9,3 +9,7 @@ export type DataProducts = {
   products: Product[];
   quantity: number;
 };
+
+export interface ICartItem extends Product {
+  quantity: number;
+}

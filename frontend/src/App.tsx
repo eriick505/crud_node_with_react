@@ -1,16 +1,17 @@
 import { ReactQueryDevtools } from "react-query/devtools";
 
+import { QueryClientProvider } from "react-query";
 import { BrowserRouter } from "react-router-dom";
 import { Flex } from "@chakra-ui/react";
 
-import { QueryClientProvider } from "react-query";
 import { queryClient } from "Services/queryClient";
 
-import AuthProvider from "Contexts/Login";
+import { AuthProvider } from "Contexts/Auth";
+
+import Routes from "routes";
 
 import Header from "Components/Header";
 import Footer from "Components/Footer";
-import Routes from "routes";
 
 function App() {
   return (

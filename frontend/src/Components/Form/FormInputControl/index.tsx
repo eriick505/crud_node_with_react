@@ -1,4 +1,5 @@
 import { ChangeEvent, useState } from "react";
+
 import {
   FormControl,
   FormLabel,
@@ -8,7 +9,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 
-import FormButton from "Components/FormButton";
+import FormButton from "../FormButton";
 
 type FormInputControlProps = {
   required?: boolean;

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const tokenKey = "userToken";
+import { tokenKey } from "./login/utils";
 
 const http = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,

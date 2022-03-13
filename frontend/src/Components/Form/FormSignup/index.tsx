@@ -1,28 +1,18 @@
-import { FormEvent, useState } from "react";
-import { useHistory } from "react-router-dom";
-
+import { FormEvent } from "react";
 import { Alert, AlertIcon } from "@chakra-ui/react";
 
-import axios from "axios";
-
-import { CREATE_USER_POST } from "Services/login";
-
 import useInput from "Hooks/useInput";
+import useAuth from "Hooks/useAuth";
 
-import FormInputControl from "Components/FormInputControl";
-import FormButton from "Components/FormButton";
-
-import type { ErrorMessage } from "Types";
+import FormInputControl from "../FormInputControl";
+import FormButton from "../FormButton";
 
 function FormSignup() {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>();
+  const { registerAuth } = useAuth();
 
   const name = useInput();
   const email = useInput();
   const password = useInput();
-
-  const history = useHistory()
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -31,26 +21,11 @@ function FormSignup() {
       name.validate() && email.validate() && password.validate();
 
     if (isFieldsAreValid) {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const { status } = await CREATE_USER_POST({
-          name: name.value,
-          email: email.value,
-          password: password.value,
-        });
-
-        if (status !== 201) throw new Error();
-
-        setLoading(false);
-
-        history.push('/login/successfully-registered')
-      } catch (err) {
-        if (axios.isAxiosError(err) && err.response) return setError((err.response.data as ErrorMessage).message);
-
-        setError((err as Error).message);
-      } 
+      registerAuth.register({
+        name: name.value,
+        email: email.value,
+        password: password.value,
+      });
     }
   };
 
@@ -86,17 +61,17 @@ function FormSignup() {
 
         <FormButton
           type="submit"
-          loading={loading}
+          loading={registerAuth.loading}
           loadingText="Enviando..."
           width="100%"
           text="Enviar"
         />
       </form>
 
-      {error && (
+      {registerAuth.error && (
         <Alert status="error" mt={4}>
           <AlertIcon />
-          {error}
+          Falha ao cadastrar o usuário
         </Alert>
       )}
     </>

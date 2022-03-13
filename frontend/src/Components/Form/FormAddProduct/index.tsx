@@ -8,8 +8,8 @@ import useInput from "Hooks/useInput";
 
 import { useCreateProductMutation } from "Services/products";
 
-import FormInputControl from "Components/FormInputControl";
-import FormButton from "Components/FormButton";
+import FormInputControl from "../FormInputControl";
+import FormButton from "../FormButton";
 
 type ImageUpload = {
   preview: string;

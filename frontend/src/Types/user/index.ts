@@ -1,16 +1,26 @@
-export type UserBodyGetRequest = {
+export type AuthUserRequest = {
   email: string;
   password: string;
 };
 
-export type UserBodyPostRequest = {
+export type AuthUserResponse = {
+  message: string;
+  token: string;
+};
+
+export type RegisterUserRequest = {
   name: string;
   email: string;
   password: string;
 };
 
-export type UserDataResponse = {
+export type RegisterUserResponse = {
   message: string;
+  userCreated: {
+    id_user: number;
+    name: string;
+    email: string;
+  };
   token: string;
 };
 

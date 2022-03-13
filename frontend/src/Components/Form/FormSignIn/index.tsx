@@ -5,14 +5,14 @@ import { Alert, AlertIcon } from "@chakra-ui/react";
 import useAuth from "Hooks/useAuth";
 import useInput from "Hooks/useInput";
 
-import FormButton from "Components/FormButton";
-import FormInputControl from "Components/FormInputControl";
+import FormButton from "../FormButton";
+import FormInputControl from "../FormInputControl";
 
 function FormSignIn() {
   const email = useInput();
   const password = useInput();
 
-  const { handleAuth } = useAuth();
+  const { loginAuth } = useAuth();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -21,7 +21,7 @@ function FormSignIn() {
 
     if (!isFieldsAreValid) return;
 
-    await handleAuth.login({ email: email.value, password: password.value });
+    loginAuth.login({ email: email.value, password: password.value });
   };
 
   return (
@@ -47,14 +47,14 @@ function FormSignIn() {
 
         <FormButton
           type="submit"
-          loading={handleAuth.loading}
+          loading={loginAuth.loading}
           loadingText="Entrando..."
           width="100%"
           text="Entrar"
         />
       </form>
 
-      {handleAuth.error && (
+      {loginAuth.error && (
         <Alert status="error" mt={4}>
           <AlertIcon />
           Falha ao logar

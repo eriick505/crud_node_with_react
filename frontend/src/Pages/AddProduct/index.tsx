@@ -9,7 +9,7 @@ import {
   ModalOverlay,
 } from "@chakra-ui/react";
 
-import FormAddProduct from "Components/FormAddProduct";
+import FormAddProduct from "Components/Form/FormAddProduct";
 import { useDisableRefetchOnFocus } from "Hooks/useDisableRefetchOnFocus";
 
 function PageAddProduct() {
