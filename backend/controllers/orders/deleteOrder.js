@@ -1,33 +1,29 @@
-const mysql = require("../../mysql").pool;
+const mysql = require("../../mysql");
 
-const deleteOrder = (req, res, next) => {
-  mysql.getConnection((error, conn) => {
+const deleteOrder = async (req, res, next) => {
+  try {
     const query = "DELETE FROM orders WHERE id_order = ?";
-    const value = [req.body.id_order];
+    const params = [req.body.id_order];
 
-    if (error) return res.status(500).send({ error });
+    await mysql.execute(query, params);
 
-    conn.query(query, value, (error, results, field) => {
-      conn.release();
-
-      if (error) return res.status(500).send({ error, response: null });
-
-      const response = {
-        message: "Successfully deleted order",
-        request: {
-          type: "POST",
-          description: "Create new Order",
-          url: `http://localhost:3000/orders`,
-          bodyRequest: {
-            id_product: "Number",
-            quantity: "Number",
-          },
+    const response = {
+      message: "Successfully deleted order",
+      request: {
+        type: "POST",
+        description: "Create new Order",
+        url: `http://localhost:3000/orders`,
+        bodyRequest: {
+          id_product: "Number",
+          quantity: "Number",
         },
-      };
+      },
+    };
 
-      res.status(202).send(response);
-    });
-  });
+    return res.status(202).send(response);
+  } catch (error) {
+    return res.status(500).send({ error });
+  }
 };
 
 module.exports = deleteOrder;
