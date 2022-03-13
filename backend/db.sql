@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 01-Set-2021 às 21:43
+-- Tempo de geração: 13-Mar-2022 às 17:27
 -- Versão do servidor: 10.4.20-MariaDB
 -- versão do PHP: 7.4.21
 
@@ -38,12 +38,8 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id_order`, `quantity`, `id_product`) VALUES
-(1, 4, 1),
-(7, 1, 1),
-(8, 1, 4),
-(9, 1, 4),
-(10, 2, 15),
-(11, 1, 15);
+(15, 20, 69),
+(17, 2, 71);
 
 -- --------------------------------------------------------
 
@@ -63,22 +59,9 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id_product`, `name`, `price`, `image_product`) VALUES
-(1, 'Luva de plástico', 50.4, NULL),
-(4, 'Guitarra Ibanez', 100, NULL),
-(5, 'Bicicleta', 1000, NULL),
-(6, 'Boneca', 100, NULL),
-(7, NULL, NULL, NULL),
-(8, 'Hot Wheels', 5.55, NULL),
-(9, 'Anime', 120, NULL),
-(10, 'Anime DA NETFLIX', 120, NULL),
-(11, 'Anime DA NETFLIX 2', 1201, NULL),
-(12, 'icone do insta', 3, NULL),
-(13, 'algo', 325, NULL),
-(14, 'novo produto', 400, 'uploads\\2021-08-30T22-51-25.626Z-17442f92-5e1f-4010-ab42-1e99da95b632.jpg'),
-(15, 'mais novo produto', 400, 'uploads\\2021-08-30T22-53-39.776Z-17442f92-5e1f-4010-ab42-1e99da95b632.jpg'),
-(16, 'algo ai', 400, 'uploads\\2021-08-30T22-55-14.373Z-17442f92-5e1f-4010-ab42-1e99da95b632.jpg'),
-(17, 'Playstation 5', 4500, 'uploads\\2021-09-01T15-31-35.404Z-quickly-setup-git.jpg'),
-(18, 'Xbox one', 4000, 'uploads\\2021-09-01T15-32-59.429Z-extensions-vscode.png');
+(69, 'Bleach', 24, 'uploads\\2022-03-01T20-22-38.723Z-drink.jpg'),
+(71, 'happy', 41241, 'uploads\\2022-03-06T19-13-10.082Z-happy.jpg'),
+(73, 'Casa', 3455, 'uploads\\2022-03-13T02-19-52.470Z-home.jpg');
 
 -- --------------------------------------------------------
 
@@ -98,10 +81,28 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id_user`, `name`, `email`, `password`) VALUES
-(1, 'Julio Casablanca', 'julio@casablanca.com', '$2b$10$dVGma1ALOAsuzNXqLcXBW.PvPU0roTiRkJnUSy5KXo1k2wkKDxm46'),
-(5, 'Mario Casablanca', 'mario@casablanca.com', '$2b$10$aE1uT0Jc44ul6.jcwFAOb.DCcroaCM32ffUZWVgx4BlZIWAvvinyK'),
-(9, 'Pipoca Casablanca', 'pipoca@casablanca.com', '$2b$10$HPCWiVegB3hptoCPTkRxlOQ29YtNVBlSQDYQg7JhQKPURHZZKR7Ii'),
-(10, 'Michael Jackson', 'mj@ihii.com', '$2b$10$E3yFhX3D9EJ1wve5VtFHF.1N/Zf1a3F1Zo9W.EkHfGmqoaACAr0xe');
+(34, 'Erick Santos Pereira da Silva', 'ericktrx1@hotmail.com', '$2b$10$l1vKjOo7BmTKUmtR.ho0h.HeooHPaed5VccaGsu/sR3qDux6A79Pm'),
+(35, 'Erick Santos Pereira da Silva', 'santoserick9@gmail.com', '$2b$10$7o2uSwov/6ccqU7Rnhnz4eKSaJ5SWm6sHbUUTLOXt5bKF1LS4.DmS'),
+(36, 'Mimizinha', 'mimizinha@mimi.com', '$2b$10$eCpdJcrOw/H7baTxw75yVeM/OWwg8wq7cuwWiBWt8Iaj3vKI2v1dC'),
+(37, 'mirerick', 'erickjeck17@gmail.com', '$2b$10$moUhu9tS8gZyNfw.NviL2OWgcYh2xROVBzdUjc4RHBiQorwC0CPl.'),
+(38, 'juca bala', 'juca@bala.com.br', '$2b$10$DL0mD24kpgNOk.dToIPBX.NmIVuyNKf5ebCdlhTmcMOm.2maYtex.'),
+(39, 'deschamps', 'felipe@deschamps', '$2b$10$emDeeRL6CT6l6cSk9JCU1uAw38umiJD1AR/H2dJqS/GlbGHzQ8q8K'),
+(40, 'fim das coisas', 'fim@jeito.com', '$2b$10$q4mv/fOqO8IdYUuiMF0Mqec7PLefoJd7si4McBjTyG.gBeU4FeT62'),
+(41, 'Erick Santos Pereira da Silva', 'escolha@melhor.com', '$2b$10$WWLZlAt.ipwhID34dVwlQuMF/zAtRBEKTuA1n9Hf7fpnzmIO3kjnW'),
+(42, 'conta 3', 'conta3@conta3.com', '$2b$10$VSYTVlHtnbpEfpJm9xkuRO1knDGmbrrq8Qa11Ed0tyknGTU99WNXS'),
+(43, 'conta4', 'conta4@conta4.com', '$2b$10$PuKxSJ6AAqEB8OVJM/nJyeKexdZUw4cPg9BoDnU9HfNzSAfFvEmcy'),
+(44, 'samatara', 'samatara@samatara.com', '$2b$10$awIsP1jrnpMexO8OLDd86OmyP.QeAs0hXBEwOVIPaJa5WCxXWYPQq'),
+(45, 'Cadastrar ', 'Cadastrar@user.com', '$2b$10$OakVLno9Suhex8oDgTiOwOY7rHQ3T0D42/sz5W2L79VH2/82PKyBW'),
+(46, 'bota bota', 'bota@bota.com', '$2b$10$6KmTQjjenfToEEQg9sWUnuK3DwByz.eacBsiTVGdok/Xi8Ulyv.sO'),
+(47, 'Erick Santos Pereira da Silva', 'comgripe@gripe.com', '$2b$10$/m8gHv2pni6v2PuSVvOZNurPtC9LcvSbDcfNResI8GCuFWHzh0IGe'),
+(48, 'julin', 'xulio@xulio.com', '$2b$10$.91lSWu.L/dQzvkU425oeeGzxQ21HxYcES9PkLB9dV.IvHNnUoz2u'),
+(49, 'Erick Santos Pereira da Silva', '12312@1231321', '$2b$10$oAz.9iacSymS74sdFDXyBeXjCWA13QnRGXMh2gzQFLPddwF3cwCIS'),
+(50, '123131', '123123@123123', '$2b$10$1GI0wguwlIpdg/E.8rSZ0.RW52ESQOih3V/Gr8LYjOEnIhvxWhuma'),
+(51, 'Erick Santos Pereira da Silva', '312311@32123', '$2b$10$pWiOuscqOPZNuyqie.GM5OzRtZh/26VcSbmMWZ49EN9VrJ7ksF.GS'),
+(52, 'audi asud', 'ayui@sud.com', '$2b$10$vCI8pu.ppufdD/EWE2TnBuVMG2YENRmPiqbwSCb0BToUEZpKjDoxe'),
+(53, 'Jug Silva', 'jug@jug.com', '$2b$10$BQLblvn.SUYc0yoYfStQkuCp33xjUo2BaO6vJA5qdWZC6JfnCpXRm'),
+(54, 'Xug Silva', 'xug@xug.com', '$2b$10$/jVkSTCEob5e1AQXkM7nIOkWafy7FVVjVGGkXe7nofXthqdtSEdrm'),
+(55, 'Lug Silva', 'lug@lug.com', '$2b$10$XLI6wAvM57bUDCWjrPJoru/JwZRAFp.onzfFFaK1.p3WzDInAUDaO');
 
 --
 -- Índices para tabelas despejadas
@@ -135,19 +136,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de tabela `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id_order` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_order` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de tabela `products`
 --
 ALTER TABLE `products`
-  MODIFY `id_product` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id_product` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 
 --
 -- AUTO_INCREMENT de tabela `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- Restrições para despejos de tabelas
@@ -157,7 +158,7 @@ ALTER TABLE `users`
 -- Limitadores para a tabela `orders`
 --
 ALTER TABLE `orders`
-  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`id_product`) REFERENCES `products` (`id_product`);
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`id_product`) REFERENCES `products` (`id_product`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
