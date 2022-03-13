@@ -11,6 +11,7 @@ const getAllProducts = async (req, res, next) => {
         name: product.name,
         price: product.price,
         image_product: product.image_product,
+        categoryId: product.categoryId,
         request: {
           type: "GET",
           description: "Get product details",

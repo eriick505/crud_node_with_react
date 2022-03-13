@@ -3,8 +3,13 @@ const mysql = require("../../mysql");
 const postProduct = async (req, res, next) => {
   try {
     const query =
-      "INSERT INTO products (name, price, image_product) VALUES (?, ?, ?)";
-    const params = [req.body.name, req.body.price, req.file.path];
+      "INSERT INTO products (name, price, image_product, categoryId) VALUES (?, ?, ?, ?)";
+    const params = [
+      req.body.name,
+      req.body.price,
+      req.file.path,
+      req.body.categoryId,
+    ];
 
     const results = await mysql.execute(query, params);
 
@@ -15,6 +20,7 @@ const postProduct = async (req, res, next) => {
         name: req.body.name,
         price: req.body.price,
         image_product: req.file.path,
+        categoryId: Number(req.body.categoryId),
         request: {
           type: "GET",
           description: "Return all Products",

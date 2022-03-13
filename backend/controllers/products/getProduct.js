@@ -16,6 +16,7 @@ const getProduct = async (req, res, next) => {
         name: result[0].name,
         price: result[0].price,
         image_product: result[0].image_product,
+        categoryId: result[0].categoryId,
         request: {
           type: "GET",
           description: "Return all Products",
