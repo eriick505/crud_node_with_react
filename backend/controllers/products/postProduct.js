@@ -1,38 +1,32 @@
-const mysql = require("../../mysql").pool;
+const mysql = require("../../mysql");
 
-const postProduct = (req, res, next) => {
-  console.log(req.user);
-
-  mysql.getConnection((error, conn) => {
+const postProduct = async (req, res, next) => {
+  try {
     const query =
       "INSERT INTO products (name, price, image_product) VALUES (?, ?, ?)";
-    const values = [req.body.name, req.body.price, req.file.path];
+    const params = [req.body.name, req.body.price, req.file.path];
 
-    if (error) return res.status(500).send({ error });
+    const results = await mysql.execute(query, params);
 
-    conn.query(query, values, (error, results, field) => {
-      conn.release();
-
-      if (error) return res.status(500).send({ error, response: null });
-
-      const response = {
-        message: "Successfully created product",
-        product: {
-          id_product: results.insertId,
-          name: req.body.name,
-          price: req.body.price,
-          image_product: req.file.path,
-          request: {
-            type: "GET",
-            description: "Return all Products",
-            url: `http://localhost:3000/products`,
-          },
+    const response = {
+      message: "Successfully created product",
+      product: {
+        id_product: results.insertId,
+        name: req.body.name,
+        price: req.body.price,
+        image_product: req.file.path,
+        request: {
+          type: "GET",
+          description: "Return all Products",
+          url: `http://localhost:3000/products`,
         },
-      };
+      },
+    };
 
-      res.status(201).send(response);
-    });
-  });
+    return res.status(201).send(response);
+  } catch (error) {
+    return res.status(500).send({ error });
+  }
 };
 
 module.exports = postProduct;
