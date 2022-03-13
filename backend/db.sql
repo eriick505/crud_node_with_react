@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 13-Mar-2022 às 21:11
+-- Tempo de geração: 14-Mar-2022 às 00:14
 -- Versão do servidor: 10.4.20-MariaDB
 -- versão do PHP: 7.4.21
 
@@ -20,6 +20,25 @@ SET time_zone = "+00:00";
 --
 -- Banco de dados: `api_node_crud`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `categories`
+--
+
+CREATE TABLE `categories` (
+  `categoryId` int(11) NOT NULL,
+  `name` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Extraindo dados da tabela `categories`
+--
+
+INSERT INTO `categories` (`categoryId`, `name`) VALUES
+(1, 'Material Escolar'),
+(2, 'Sentimentos');
 
 -- --------------------------------------------------------
 
@@ -51,17 +70,19 @@ CREATE TABLE `products` (
   `id_product` int(11) NOT NULL,
   `name` varchar(45) DEFAULT NULL,
   `price` float DEFAULT NULL,
-  `image_product` varchar(500) DEFAULT NULL
+  `image_product` varchar(500) DEFAULT NULL,
+  `categoryId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Extraindo dados da tabela `products`
 --
 
-INSERT INTO `products` (`id_product`, `name`, `price`, `image_product`) VALUES
-(69, 'Bleach', 24, 'uploads\\2022-03-01T20-22-38.723Z-drink.jpg'),
-(71, 'happy', 41241, 'uploads\\2022-03-06T19-13-10.082Z-happy.jpg'),
-(73, 'Casa', 3455, 'uploads\\2022-03-13T02-19-52.470Z-home.jpg');
+INSERT INTO `products` (`id_product`, `name`, `price`, `image_product`, `categoryId`) VALUES
+(69, 'Bleach', 24, 'uploads\\2022-03-01T20-22-38.723Z-drink.jpg', 2),
+(71, 'happy', 41241, 'uploads\\2022-03-06T19-13-10.082Z-happy.jpg', 1),
+(73, 'Casa', 3455, 'uploads\\2022-03-13T02-19-52.470Z-home.jpg', 1),
+(80, 'Produto com categoria', 24242, 'uploads\\2022-03-13T20-58-33.347Z-cover-album.jpg', 1);
 
 -- --------------------------------------------------------
 
@@ -130,6 +151,12 @@ INSERT INTO `users` (`id_user`, `name`, `email`, `password`) VALUES
 --
 
 --
+-- Índices para tabela `categories`
+--
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`categoryId`);
+
+--
 -- Índices para tabela `orders`
 --
 ALTER TABLE `orders`
@@ -140,7 +167,8 @@ ALTER TABLE `orders`
 -- Índices para tabela `products`
 --
 ALTER TABLE `products`
-  ADD PRIMARY KEY (`id_product`);
+  ADD PRIMARY KEY (`id_product`),
+  ADD KEY `fk_product_category` (`categoryId`);
 
 --
 -- Índices para tabela `product_images`
@@ -161,6 +189,12 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT de tabela `categories`
+--
+ALTER TABLE `categories`
+  MODIFY `categoryId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT de tabela `orders`
 --
 ALTER TABLE `orders`
@@ -170,7 +204,7 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT de tabela `products`
 --
 ALTER TABLE `products`
-  MODIFY `id_product` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
+  MODIFY `id_product` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 
 --
 -- AUTO_INCREMENT de tabela `product_images`
@@ -193,6 +227,12 @@ ALTER TABLE `users`
 --
 ALTER TABLE `orders`
   ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`id_product`) REFERENCES `products` (`id_product`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Limitadores para a tabela `products`
+--
+ALTER TABLE `products`
+  ADD CONSTRAINT `fk_product_category` FOREIGN KEY (`categoryId`) REFERENCES `categories` (`categoryId`);
 
 --
 -- Limitadores para a tabela `product_images`
