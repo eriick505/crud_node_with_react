@@ -9,6 +9,9 @@ const getProductController = require("../controllers/products/getProduct");
 const updateProductController = require("../controllers/products/updateProduct");
 const deleteProductController = require("../controllers/products/deleteProduct");
 
+const postImageProductController = require("../controllers/productImages/postImageProduct");
+const getImagesProductController = require("../controllers/productImages/getImagesProduct");
+
 const storage = multer.diskStorage({
   destination: function (req, file, callback) {
     callback(null, "./uploads/");
@@ -42,9 +45,16 @@ router.post(
   upload.single("product_image"),
   postProductController
 );
-
 router.get("/:product_id", getProductController);
 router.patch("/", login.required, updateProductController);
 router.delete("/", login.required, deleteProductController);
+
+router.post(
+  "/:id_product/image",
+  login.required,
+  upload.single("product_image"),
+  postImageProductController
+);
+router.get("/:id_product/images", getImagesProductController);
 
 module.exports = router;
