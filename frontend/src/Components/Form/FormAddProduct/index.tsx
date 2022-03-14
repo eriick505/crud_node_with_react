@@ -10,6 +10,7 @@ import { useCreateProductMutation } from "Services/products";
 
 import FormInputControl from "../FormInputControl";
 import FormButton from "../FormButton";
+import { useCategoryList } from "Services/categories";
 
 type ImageUpload = {
   preview: string;
@@ -23,6 +24,8 @@ function FormAddProduct() {
   const [image, setImage] = useState({} as ImageUpload);
 
   const createProduct = useCreateProductMutation();
+
+  const { isLoading, data } = useCategoryList();
 
   const handleChangeInputUpload = ({
     target,
@@ -59,6 +62,8 @@ function FormAddProduct() {
     createProduct.mutate(formData);
   };
 
+  console.log(data, "data aqui");
+
   return (
     <form onSubmit={handleSubmit}>
       <Flex mb={4}>
@@ -80,6 +85,8 @@ function FormAddProduct() {
           {...price}
         />
       </Flex>
+
+      <h1>{isLoading ? "carregando" : data?.categories[0].name}</h1>
 
       <Input
         required

@@ -6,7 +6,7 @@ import { FiTrash } from "react-icons/fi";
 import { useCartStore } from "Store/cart";
 import { formatterPrice } from "Utils/formatterPriceBRL";
 
-import type { ICartItem } from "Types/products.types";
+import type { ICartItem } from "Types/products";
 
 type CartItemProps = {
   product: ICartItem;

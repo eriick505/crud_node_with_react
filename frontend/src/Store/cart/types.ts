@@ -1,4 +1,4 @@
-import type { ICartItem, Product } from "Types/products.types";
+import type { ICartItem, Product } from "Types/products";
 
 export type InitialState = {
   productList: ICartItem[];

@@ -4,7 +4,7 @@ import { FiPlusCircle, FiTrash } from "react-icons/fi";
 import { useCartStore } from "Store/cart";
 import { formatterPrice } from "Utils/formatterPriceBRL";
 
-import type { Product } from "Types/products.types";
+import type { Product } from "Types/products";
 
 type ProductCardProps = {
   product: Product;

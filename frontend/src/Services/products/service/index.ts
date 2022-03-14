@@ -5,9 +5,9 @@ import {
   SERVICE_CREATE_PRODUCT,
   SERVICE_DELETE_PRODUCT,
   SERVICE_LIST_PRODUCT,
-} from "../utils/const";
+} from "../utils/routes";
 
-import type { DataProducts } from "Types/products.types";
+import type { DataProducts } from "Types/products";
 
 export const GET_LIST_PRODUCT = (): Promise<AxiosResponse<DataProducts>> =>
   http.get(SERVICE_LIST_PRODUCT);

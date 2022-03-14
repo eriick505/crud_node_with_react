@@ -2,7 +2,7 @@ import { useQuery } from "react-query";
 
 import { GET_LIST_PRODUCT } from "Services/products";
 
-import type { DataProducts } from "Types/products.types";
+import type { DataProducts } from "Types/products";
 
 export const useListProduct = () =>
   useQuery<DataProducts, Error>("productList", () =>
