@@ -3,9 +3,22 @@ import { Heading, SimpleGrid } from "@chakra-ui/react";
 import { useListProduct, useDeleteProductMutation } from "Services/products";
 
 import ProductCard from "Components/ProductList/ProductCard";
+import FilterProduct from "./Filters";
+import { ChangeEvent, useState } from "react";
 
 function ProductList() {
-  const { isLoading, error, isError, data: listProduct } = useListProduct();
+  const [valueSelect, setValueSelect] = useState("");
+
+  const onChangeSelect = ({ target }: ChangeEvent<HTMLSelectElement>) => {
+    setValueSelect(target.value);
+  };
+
+  const {
+    isLoading,
+    error,
+    isError,
+    data: listProduct,
+  } = useListProduct(Number(valueSelect));
 
   const productList = listProduct?.products;
   const quantity = listProduct?.quantity;
@@ -15,6 +28,8 @@ function ProductList() {
 
   return (
     <>
+      <FilterProduct value={valueSelect} onChange={onChangeSelect} />
+
       <Heading as="h1" size="2xl" mb={10} textAlign="center">
         Lista de Produtos
       </Heading>
