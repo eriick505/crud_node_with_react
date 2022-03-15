@@ -1,6 +1,17 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 
-import { Button, Flex, Box, Badge, Input } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Box,
+  Badge,
+  Input,
+  Select,
+  FormLabel,
+  FormControl,
+  Spinner,
+  Text,
+} from "@chakra-ui/react";
 
 import { FiSmile } from "react-icons/fi";
 
@@ -21,11 +32,14 @@ function FormAddProduct() {
   const name = useInput();
   const price = useInput();
 
+  const [valueSelect, setValueSelect] = useState("");
+
   const [image, setImage] = useState({} as ImageUpload);
 
   const createProduct = useCreateProductMutation();
+  const categoriesInfo = useCategoryList();
 
-  const { isLoading, data } = useCategoryList();
+  const categoryList = categoriesInfo?.data?.categories;
 
   const handleChangeInputUpload = ({
     target,
@@ -46,23 +60,29 @@ function FormAddProduct() {
     name.setValue("");
     price.setValue("");
     setImage({} as ImageUpload);
+    setValueSelect("");
+  };
+
+  const onChangeSelect = ({ target }: ChangeEvent<HTMLSelectElement>) => {
+    setValueSelect(target.value);
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    if (valueSelect === "") return;
 
     const formData = new FormData();
 
     formData.append("name", name.value);
     formData.append("price", price.value);
     formData.append("product_image", image.raw);
+    formData.append("categoryId", valueSelect);
 
     if (!image.raw) return;
 
     createProduct.mutate(formData);
   };
-
-  console.log(data, "data aqui");
 
   return (
     <form onSubmit={handleSubmit}>
@@ -86,7 +106,29 @@ function FormAddProduct() {
         />
       </Flex>
 
-      <h1>{isLoading ? "carregando" : data?.categories[0].name}</h1>
+      {categoriesInfo.isLoading && <Spinner />}
+
+      {categoryList && (
+        <FormControl isRequired mb={4}>
+          <FormLabel>Selecione a categoria</FormLabel>
+          <Select
+            required
+            placeholder="Selecione uma categoria"
+            value={valueSelect}
+            onChange={onChangeSelect}
+          >
+            {categoryList.map(({ categoryId, name }) => (
+              <option key={categoryId} value={categoryId}>
+                {name}
+              </option>
+            ))}
+          </Select>
+        </FormControl>
+      )}
+
+      {categoriesInfo.isError && (
+        <Text fontSize="sm">{categoriesInfo.error}</Text>
+      )}
 
       <Input
         required

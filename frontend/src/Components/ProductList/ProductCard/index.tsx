@@ -33,7 +33,7 @@ function ProductCard({ product, deleteProduct }: ProductCardProps) {
       <Box p="6">
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <Badge borderRadius="full" px="2" colorScheme="teal">
-            {product.id_product}
+            {product.category.name}
           </Badge>
 
           <div>
