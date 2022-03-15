@@ -1,4 +1,5 @@
 const mysql = require("../../mysql");
+const getCategoryNameById = require("../../utils/getCategoryNameById");
 
 const getProduct = async (req, res, next) => {
   try {
@@ -10,13 +11,18 @@ const getProduct = async (req, res, next) => {
     if (result.length === 0)
       return res.status(404).send({ message: "Product Not Found" });
 
+    const categoryName = await getCategoryNameById(result[0].categoryId);
+
     const response = {
       product: {
         id_product: result[0].id_product,
         name: result[0].name,
         price: result[0].price,
         image_product: result[0].image_product,
-        categoryId: result[0].categoryId,
+        category: {
+          categoryId: result[0].categoryId,
+          name: categoryName,
+        },
         request: {
           type: "GET",
           description: "Return all Products",
