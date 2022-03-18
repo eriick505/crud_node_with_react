@@ -4,8 +4,8 @@ import morgan from "morgan";
 import cors from "cors";
 import mongoose from "mongoose";
 
-import { url } from "./configs/mongodb";
-import userRouter from "./routes/users";
+import { url } from "@configs/mongodb";
+import userRouter from "@routes/users";
 
 interface ErrorMsgWithStatus {
   status?: number;
