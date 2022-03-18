@@ -1,5 +1,5 @@
 import { Router } from "express";
-import getUsersData from "../controllers/users/getUsersData";
+import { getUsersData, signUp } from "@controllers/users";
 
 // import createUserData from "../controllers/users/createUserData.js";
 // import editUserById from "../controllers/users/editUserById.js";
@@ -7,7 +7,7 @@ import getUsersData from "../controllers/users/getUsersData";
 
 // import getUsersData from "../controllers/users/getUsersData.js";
 
-// import signup from "../controllers/users/signUp.js";
+// import signup from "../controllers/users/signUp";
 // import login from "../controllers/users/login.js";
 
 const userRouter = Router();
@@ -18,7 +18,7 @@ userRouter.get("/all-users", getUsersData);
 // userRouter.put("/:id", editUserById);
 // userRouter.post("/create-user", createUserData);
 
-// userRouter.post("/signup", signup);
+userRouter.post("/signup", signUp);
 // userRouter.post("/login", login);
 // userRouter.post("/get-user", getUserByToken);
 
