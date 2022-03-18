@@ -6,6 +6,7 @@
       "@models/*": ["./src/models/*"],
       "@configs/*": ["./src/configs/*"],
       "@routes/*": ["./src/routes/*"],
+      "@type/*": ["./src/types/*"],
       "@utils/*": ["./src/utils/*"]
     },
     "target": "es2017",
