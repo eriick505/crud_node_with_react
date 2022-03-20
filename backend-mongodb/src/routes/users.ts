@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getUsersData, signUp } from "@controllers/users";
+import { getUsersData, signUp, login } from "@controllers/users";
 
 // import createUserData from "../controllers/users/createUserData.js";
 // import editUserById from "../controllers/users/editUserById.js";
@@ -19,7 +19,7 @@ userRouter.get("/all-users", getUsersData);
 // userRouter.post("/create-user", createUserData);
 
 userRouter.post("/signup", signUp);
-// userRouter.post("/login", login);
+userRouter.post("/login", login);
 // userRouter.post("/get-user", getUserByToken);
 
 export default userRouter;
