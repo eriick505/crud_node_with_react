@@ -4,7 +4,9 @@ import jwt from "jsonwebtoken";
 
 import User from "@models/User";
 
-import type { IUserRequest, IUser } from "@type/user";
+import { validateBodyFieldsExist } from "@utils/validateBodyFieldsExist";
+
+import type { IUserSignupRequest, IUser } from "@type/user";
 import type { ResponseError } from "@type/common";
 
 type ResponseSignUp = {
@@ -14,34 +16,26 @@ type ResponseSignUp = {
 };
 
 const signUp = async (
-  req: Request<{}, {}, IUserRequest>,
+  req: Request<{}, {}, IUserSignupRequest>,
   res: Response<ResponseSignUp | ResponseError>
 ) => {
   try {
     const { name, email, phone, password } = req.body;
 
-    const tryValidate = {
-      name: !!name,
-      email: !!email,
-      phone: !!phone,
-      password: !!password,
+    const fields = {
+      name,
+      email,
+      phone,
+      password,
     };
 
-    const bodyFields = Object.keys(tryValidate).map(
-      (item) => tryValidate[item] === true ?? false
-    );
+    const { exist, getRequiredFields } = validateBodyFieldsExist(fields);
 
-    const isBodyFieldsValidy = bodyFields.every((field) => field);
-
-    if (!isBodyFieldsValidy) {
-      const requiredFields = bodyFields
-        .map((field, index) => !field && Object.keys(tryValidate)[index])
-        .filter((field) => field);
-
+    if (!exist) {
       return res.status(400).send({
         error: {
           message: "Falha ao informar os campos do body",
-          requiredFields,
+          requiredFields: getRequiredFields,
         },
       });
     }
