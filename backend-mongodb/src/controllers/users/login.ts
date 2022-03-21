@@ -16,21 +16,10 @@ const login = async (
   try {
     const { email, password } = req.body;
 
-    const fields = {
+    validateBodyFieldsExist({
       email,
       password,
-    };
-
-    const { exist, getRequiredFields } = validateBodyFieldsExist(fields);
-
-    if (!exist) {
-      return res.status(400).send({
-        error: {
-          message: "Falha ao informar os campos do body",
-          requiredFields: getRequiredFields,
-        },
-      });
-    }
+    });
 
     const hasUserRegistered = await User.findOne({ email });
 
