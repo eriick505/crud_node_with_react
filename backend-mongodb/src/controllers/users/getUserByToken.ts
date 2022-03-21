@@ -1,10 +1,26 @@
+import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import User from "../../models/User.js";
 
-const getUserByToken = async (req, res, next) => {
+import User from "@models/User";
+
+import type { ResponseError } from "@type/common";
+import type { IUserByTokenResponse } from "@type/user";
+
+interface GetUserByToken {
+  user: IUserByTokenResponse;
+}
+
+const getUserByToken = async (
+  req: Request,
+  res: Response<GetUserByToken | ResponseError>
+) => {
   try {
-    const token = req.headers.authorization.split(" ")[1];
-    const decode = jwt.verify(token, process.env.JWT_KEY);
+    const token = req.headers.authorization?.split(" ")[1];
+
+    const decode = jwt.verify(
+      token,
+      process.env.JWT_KEY
+    ) as IUserByTokenResponse;
 
     if (!decode) {
       return res.status(500).send({ error: "Token is not invalid" });
@@ -18,7 +34,7 @@ const getUserByToken = async (req, res, next) => {
 
     const response = {
       user: {
-        id: user._id,
+        id: user._id.toString(),
         name: user.name,
         email: user.email,
         phone: user.phone ?? null,
