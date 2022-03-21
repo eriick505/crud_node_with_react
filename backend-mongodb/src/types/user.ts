@@ -17,3 +17,7 @@ export interface IUserLoginResponse {
   message: string;
   token?: string;
 }
+
+export interface IUserByTokenResponse extends IUser {
+  id: string;
+}
