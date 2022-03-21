@@ -6,6 +6,8 @@ import mongoose from "mongoose";
 
 import { url } from "@configs/mongodb";
 import userRouter from "@routes/users";
+import productRouter from "@routes/products";
+import categoryRouter from "@routes/category";
 
 interface ErrorMsgWithStatus {
   status?: number;
@@ -44,6 +46,8 @@ const connectDB = async () => {
 
     // routes
     app.use("/user", userRouter);
+    app.use("/product", productRouter);
+    app.use("/category", categoryRouter);
 
     app.use((req, res, next) => {
       const error: ErrorMsgWithStatus = {
