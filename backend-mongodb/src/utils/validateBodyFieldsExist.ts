@@ -17,11 +17,11 @@ export const validateBodyFieldsExist = (fields: Object) => {
     (field) => field
   );
 
-  if (isBodyFieldsValidy) return { exist: true };
+  if (isBodyFieldsValidy) return;
 
   const getRequiredFields = transformEachFieldToBoolean
     .map((field, index) => !field && Object.keys(booleanFields)[index])
     .filter((field) => field);
 
-  return { exist: false, getRequiredFields };
+  throw { message: "Falha ao informar os campos do body", getRequiredFields };
 };
