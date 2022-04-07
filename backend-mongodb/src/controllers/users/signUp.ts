@@ -45,9 +45,15 @@ const signUp = async (
       phone,
     };
 
-    await User.create({ ...user, password: hash });
+    const userCreated = await User.create({ ...user, password: hash });
 
-    const token = jwt.sign(user, process.env.JWT_KEY, {
+    const userCreatedToToken = {
+      id: userCreated.id,
+      name: userCreated.name,
+      email: userCreated.email,
+    };
+
+    const token = jwt.sign(userCreatedToToken, process.env.JWT_KEY, {
       expiresIn: "1h",
     });
 
