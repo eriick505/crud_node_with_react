@@ -24,14 +24,14 @@ const login = async (
     const hasUserRegistered = await User.findOne({ email });
 
     if (!hasUserRegistered)
-      return res.status(401).send({ message: "Couldn't find your Account" });
+      return res.status(401).send({ error: "Couldn't find your Account" });
 
     const passwordHashDB = hasUserRegistered.password;
 
     const bCryptResult = bcrypt.compareSync(password, passwordHashDB);
 
     if (!bCryptResult || !passwordHashDB)
-      return res.status(401).send({ message: "Email or password invalid" });
+      return res.status(401).send({ error: "Email or password invalid" });
 
     const id = hasUserRegistered._id;
     const name = hasUserRegistered.name;
