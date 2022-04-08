@@ -51,18 +51,12 @@ const connectDB = async () => {
 
     app.use((req, res, next) => {
       const error: ErrorMsgWithStatus = {
-        message: "Not Found",
+        message: "Endpoint not found",
         status: 404,
       };
 
-      next(error);
-    });
-
-    app.use((error: ErrorMsgWithStatus, req: Request, res: Response) => {
       return res.status(error.status || 500).send({
-        error: {
-          message: error.message,
-        },
+        message: error.message,
       });
     });
 
